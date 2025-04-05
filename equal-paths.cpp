@@ -8,7 +8,7 @@ using namespace std;
 
 
 // You may add any prototypes of helper functions here
-size_t getLeftLeafDepth(Node* root, size_t depth)
+/*size_t getLeftLeafDepth(Node* root, size_t depth)
 {
   if (!root)
   {
@@ -41,6 +41,37 @@ size_t getRightLeafDepth(Node* root, size_t depth)
   }
   return getRightLeafDepth(root -> left, depth + 1);
 } 
+*/
+int leafDepth(Node* root)
+{
+  if(!root)
+  {
+    return 0;
+  }
+  if (!root -> left && !root -> right)
+  {
+    return 0;
+  }
+
+  int leftDepth = leafDepth(root -> left);
+  int rightDepth = leafDepth(root -> right);
+
+  //one child missing
+  if (leftDepth == -1)
+  {
+    return rightDepth + 1;
+  }
+  if (rightDepth == -1)
+  {
+    return leftDepth + 1;
+  }
+  if (leftDepth != rightDepth)
+  {
+    return -2;
+  }
+  return leftDepth + 1;
+}
+
 
 bool equalPaths(Node * root)
 {
@@ -49,11 +80,10 @@ bool equalPaths(Node * root)
     {
       return equal;
     }
-    if (getRightLeafDepth(root -> right, 1) == getLeftLeafDepth(root -> left, 1))
+    if (leafDepth(root) >= 0)
     {
       return equal;
     }
     return false;
-
 }
 
